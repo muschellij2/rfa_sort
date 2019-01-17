@@ -61,6 +61,9 @@ ui <- fluidRow(
             )
         )
     ),
+    helpText(HTML(
+        'The source code of this app is <a href="https://github.com/muschellij2/rfa_sort">on GitHub</a>.'
+    )),
     
     # # Sidebar with a slider input for number of bins 
     # sidebarLayout(
