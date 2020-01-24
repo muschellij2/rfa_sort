@@ -102,7 +102,8 @@ server <- function(input, output) {
                       options = list(
                           autoWidth = TRUE,
                           paging = FALSE,
-                          pageLength = 30), escape = FALSE)
+                          pageLength = 30), escape = FALSE,
+                      rownames = FALSE)
     })
 }
 
