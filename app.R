@@ -10,13 +10,18 @@ url = "https://grants.nih.gov/grants/guide/search_results.htm?scope=rfa&year=act
 doc = read_html(url)
 bad_string = "ZZZZZ"
 doc <- read_html(gsub("<br>", bad_string, doc))
-nodes = html_nodes(doc, xpath = "//div[ @class='l-main-wrapper']//table//table")
-
-tabs = html_table(nodes, fill = TRUE)
+# nodes = html_nodes(doc, xpath = "//div[ @class='l-main-wrapper']//table//table")
+tabs = html_table(doc, fill = TRUE)
 keep_tab = sapply(tabs, function(x) {
     cn = colnames(x)
     any(grepl("^Announcement", cn))
 })
+
+# tabs = html_table(nodes, fill = TRUE)
+# keep_tab = sapply(tabs, function(x) {
+#     cn = colnames(x)
+#     any(grepl("^Announcement", cn))
+# })
 stopifnot(sum(keep_tab) == 1)
 
 tab = tabs[[which(keep_tab)]]
