@@ -10,7 +10,7 @@ url = "https://grants.nih.gov/grants/guide/search_results.htm?scope=rfa&year=act
 doc = read_html(url)
 bad_string = "ZZZZZ"
 doc <- read_html(gsub("<br>", bad_string, doc))
-# nodes = html_nodes(doc, xpath = "//div[ @class='l-main-wrapper']//table//table")
+# nodes = html_nodes(doc, xpath = ".//table")
 tabs = html_table(doc, fill = TRUE)
 keep_tab = sapply(tabs, function(x) {
     cn = colnames(x)
@@ -41,14 +41,23 @@ tab[gg] = lapply(tab[gg], gsub, pattern = bad_string, " ")
 nih_link = function(id, value) {
     x = paste0("https://grants.nih.gov/grants/guide/search_results.htm?text_curr=", 
                id, "&related=yes&sort=")
-    x = paste0('<a href="', x, '">', value, "</a>")
+    x = paste0('<a href="', x, '" target="_blank">', value, "</a>")
+    x
+}
+
+rfa_link = function(id, value) {
+    x = paste0("https://grants.nih.gov/grants/guide/rfa-files/",
+               id, ".html")
+    x = paste0('<a href="', x, '" target="_blank">', value, "</a>")
     x
 }
 
 tab = tab %>% 
     mutate(`Announcement Number` = trimws(`Announcement Number`),
            `Related Announc.` = nih_link(id = `Announcement Number`, 
-                                         `Related Announc.`))
+                                         `Related Announc.`),
+           `Announcement Number` = rfa_link(id = `Announcement Number`,
+                                            value = `Announcement Number`))
 
 
 # Define UI for application that draws a histogram
